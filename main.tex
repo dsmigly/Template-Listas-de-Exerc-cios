@@ -1,5 +1,5 @@
 \documentclass[12pt, a4paper]{article}
-\usepackage[bottom=2cm,top=3cm,left=3cm,right=2cm]{geometry}
+\usepackage[bottom=2cm,top=3cm,left=2cm,right=2cm]{geometry}
 \usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{CJKutf8}
@@ -112,7 +112,20 @@
 \newenvironment{exercicio}[1][]{\refstepcounter{exercicio}\par\medskip
  \textcolor{blue}{\bf(\theexercicio)} \rmfamily}{\medskip }
    
+ \usepackage{ifmtarg}% http://ctan.org/pkg/ifmtarg
+ 
+ \makeatletter 
+ \newcommand{\isempty}[1]{%
+  \@ifmtarg{#1}{\begin{question}}{\begin{question}[topic=#1]}}
+
+% \newcommand{\isempty}[1]{%
+%  \@ifmtarg{#1}{\begin{question}}{\begin{question}[topic=#1]}}
+  
+    
+ 
+ 
 \newenvironment{solucao}[1][]{\textbf{\\ \\ \textcolor{red}{Solução:}}#1 \rmfamily}{\medskip }
+
 
 \newenvironment{criterios}[1][]{
  \textcolor{blue}{\bf Critérios de Correção:} \rmfamily \par\medskip #1 }{\medskip }
@@ -137,6 +150,32 @@
 \newcommand{\monitor}{Douglas de Araujo Smigly}
 \newcommand{\semestre}{2º Semestre de 2020}
 %----------------------------------------------------------------
+
+%Mostrar ou não as soluções
+%\SetupExSheets{solution/print=true} %Se print=false, este arquivo Não imprime as soluções.
+\SetupExSheets{solution/print=true}
+
+
+%Solução sem numeração (pois vem logo depois da questão) - se quiser com números, basta comentar os comandos abaixo:
+\DeclareInstance{exsheets-heading}{block-no-nr}{default}{
+  attach = {
+    main[l,vc]title[l,vc](0pt,0pt) ;
+    main[r,vc]points[l,vc](\marginparsep,0pt)
+  }
+}
+
+%  {question}[headings=block-subtitle] - por bloco
+\RenewQuSolPair
+  {question}[headings=block-no-nr]
+  {solution}[headings=block-no-nr]
+
+%Personalização de Questão/ Solução
+\SetupExSheets{
+  counter-format=se.qu.,
+  question/name= ,
+  solution/name=\textcolor{red}{Solução}
+}
+
 %Cabeçalho
 %----------------------------------------------------------------
 \title{\vspace{-15mm}\fontsize{16pt}{10pt}\selectfont\textbf{\titulo} \\ \vspace{5mm} \textbf{\textcolor{Floresta}{\lista}} \PrintSolutionsT{ - \textcolor{blue}{Soluções}}} % Article title
@@ -179,6 +218,9 @@ Qual dos números abaixo é primo?
 }
 \end{exercicio}
 
+\begin{question}
+
+\end{question}
 %Questão com itens
 \begin{exercicio}
 Números abundantes e deficientes são interessantes.
@@ -187,18 +229,17 @@ Números abundantes e deficientes são interessantes.
 \task[\alt{b}] Prove que $945$ é o menor número abundante ímpar.
 }
 \end{exercicio}
-
 %Questão com solução
 \begin{exercicio}
 Determine com quantos zeros termina o número $1000!$.
 \end{exercicio}
-\begin{solucao}
+\begin{solution}
 Cada zero significa a presença de um fator $10$ no número. Assim, basta encontrar a quantidade de fatores $10$ do número. Como $10 = 2 \times 5,$ podemos contar apenas o expoente de $5$ na fatoração de $1000!$ Pela Fórmula de Polignac, 
 \[
 n_5(1000!) = \sum\limits_{k=1}^\infty \left\lfloor \dfrac{1000}{5^k} \right\rfloor = \left\lfloor \dfrac{1000}{5^1} \right\rfloor + \left\lfloor \dfrac{1000}{5^2} \right\rfloor + \left\lfloor \dfrac{1000}{5^3} \right\rfloor + \left\lfloor \dfrac{1000}{5^4} \right\rfloor = 200 + 40 + 8 + 1 = 249.
 \]
 Dessa forma, temos um total de $249$ zeros.
-\end{solucao}
+\end{solution}
 
 \begin{mdframed}[style=Criterios]
 \begin{criterios}
